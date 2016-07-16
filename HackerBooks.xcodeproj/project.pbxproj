@@ -18,6 +18,7 @@
 		A927B9C21D2907E600148842 /* AGTBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A927B9C01D2907E600148842 /* AGTBookViewController.swift */; };
 		A927B9C31D2907E600148842 /* AGTBookViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A927B9C11D2907E600148842 /* AGTBookViewController.xib */; };
 		A93A08901D32997400305284 /* AGTLibraryTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93A088F1D32997400305284 /* AGTLibraryTableViewController.swift */; };
+		A93A08921D32A37200305284 /* Tags.swift in Sources */ = {isa = PBXBuildFile; fileRef = A93A08911D32A37200305284 /* Tags.swift */; };
 		A9B652C11D29863F003279E2 /* AGTSimplePDFViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9B652BF1D29863F003279E2 /* AGTSimplePDFViewController.swift */; };
 		A9B652C21D29863F003279E2 /* AGTSimplePDFViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = A9B652C01D29863F003279E2 /* AGTSimplePDFViewController.xib */; };
 /* End PBXBuildFile section */
@@ -36,6 +37,7 @@
 		A927B9C01D2907E600148842 /* AGTBookViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGTBookViewController.swift; sourceTree = "<group>"; };
 		A927B9C11D2907E600148842 /* AGTBookViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTBookViewController.xib; sourceTree = "<group>"; };
 		A93A088F1D32997400305284 /* AGTLibraryTableViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGTLibraryTableViewController.swift; sourceTree = "<group>"; };
+		A93A08911D32A37200305284 /* Tags.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Tags.swift; sourceTree = "<group>"; };
 		A9B652BF1D29863F003279E2 /* AGTSimplePDFViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGTSimplePDFViewController.swift; sourceTree = "<group>"; };
 		A9B652C01D29863F003279E2 /* AGTSimplePDFViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTSimplePDFViewController.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -96,6 +98,7 @@
 				A90B880A1D28239F00B763B6 /* AGTLibrary.swift */,
 				A916AFFB1D2D6ABC0059D1A7 /* JSONProcessing.swift */,
 				A916AFFD1D2D6B200059D1A7 /* Errors.swift */,
+				A93A08911D32A37200305284 /* Tags.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -191,6 +194,7 @@
 				A9B652C11D29863F003279E2 /* AGTSimplePDFViewController.swift in Sources */,
 				A90B87F51D28124C00B763B6 /* AppDelegate.swift in Sources */,
 				A90B880B1D28239F00B763B6 /* AGTLibrary.swift in Sources */,
+				A93A08921D32A37200305284 /* Tags.swift in Sources */,
 				A90B88091D2814A100B763B6 /* AGTBook.swift in Sources */,
 				A93A08901D32997400305284 /* AGTLibraryTableViewController.swift in Sources */,
 				A916AFFE1D2D6B200059D1A7 /* Errors.swift in Sources */,

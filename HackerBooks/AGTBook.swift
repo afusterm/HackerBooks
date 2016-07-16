@@ -9,20 +9,47 @@
 import Foundation
 import UIKit
 
-class AGTBook {
+let FavoriteDidChangeNotification = "Favorite tag did change"
+
+class AGTBook: Hashable, Equatable {
     let title: String
-    let authors: [String]
+    let authors: String
     let tags: [String]
     let image: UIImage
     let pdfURL: NSURL
-    var favorite: Bool
     
-    init(title: String, authors: [String], tags: [String], image: UIImage, pdfURL: NSURL, favorite: Bool) {
+    private var fav: Bool
+    
+    var favorite: Bool {
+        get {
+            return fav
+        }
+        
+        set(newValue) {
+            if fav != newValue {
+                fav = newValue
+                
+                let nc = NSNotificationCenter.defaultCenter()
+                let notif = NSNotification(name: FavoriteDidChangeNotification, object: self)
+                nc.postNotification(notif)
+            }
+        }
+    }
+    
+    var hashValue: Int {
+        return title.hashValue
+    }
+    
+    init(title: String, authors: String, tags: [String], image: UIImage, pdfURL: NSURL, favorite: Bool) {
         self.title = title
         self.authors = authors
         self.tags = tags
         self.image = image
         self.pdfURL = pdfURL
-        self.favorite = favorite
+        self.fav = favorite
     }
+}
+
+func ==(lhs: AGTBook, rhs: AGTBook) -> Bool {
+    return lhs.hashValue == rhs.hashValue
 }

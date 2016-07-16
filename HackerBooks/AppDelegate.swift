@@ -35,15 +35,24 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         guard let data = NSData(contentsOfURL: url) else {
             fatalError("Error while loading contents of JSON data")
-            return false
         }
         
-        let library = AGTLibrary(jsonData: data)
-        
-        
-        // meter el controlador en la ventana
-        
-        window?.makeKeyAndVisible()
+        do {
+            let library = try AGTLibrary(jsonData: data)
+            
+            let VC = AGTLibraryTableViewController(model: library)
+            
+            // meter el controlador en la ventana
+            window?.rootViewController = VC
+            
+            window?.makeKeyAndVisible()
+        } catch let error as HackerBooksError {
+            print(error.description)
+            return false
+        } catch {
+            print("Error on launching")
+            return false
+        }
         
         return true
     }

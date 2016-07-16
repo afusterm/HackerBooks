@@ -24,11 +24,9 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         throw HackerBooksError.wrongJSONFormat
     }
     
-    guard let authorsStr = json["authors"] as? String else {
+    guard let authors = json["authors"] as? String else {
         throw HackerBooksError.wrongJSONFormat
     }
-    
-    let authors = authorsStr.componentsSeparatedByString(",")
     
     guard let imageStr = json["image_url"] as? String else {
         throw HackerBooksError.wrongJSONFormat
@@ -58,7 +56,11 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         throw HackerBooksError.wrongJSONFormat
     }
     
-    var tags = tagsStr.componentsSeparatedByString(",")
+    // remove all the trailing spaces in tags
+    var tags = [String]()
+    tagsStr.componentsSeparatedByString(",").forEach { (t: String) in
+        tags.append(t.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
+    }
     
     var favorite = false
     if tags.contains("favorite") {

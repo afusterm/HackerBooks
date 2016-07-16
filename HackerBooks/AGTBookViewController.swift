@@ -32,15 +32,7 @@ class AGTBookViewController: UIViewController {
     func syncModelWithView() {
         coverImage.image = self.model.image
         titleLabel.text = self.model.title
-        
-        // actualizar autores
-        var authors = ""
-        for author in self.model.authors {
-            authors.appendContentsOf(author)
-            authors.appendContentsOf(" ")
-        }
-        
-        authorsLabel.text = authors
+        authorsLabel.text = self.model.authors
         
         // actualizar etiquetas
         var tags = ""
