@@ -26,3 +26,6 @@ Cuando se modifica la propiedad *favorite* de un objeto *AGTBook*, éste avisa a
 
 Para la actualización de la table he llamado a *reloadData*. Este método solo carga las celdas que son visibles, por lo que no penaliza el rendimiento. Creo que es aconsejable usarlo una vez se hayan modificado los datos, y no en cada una de las modificaciones, inserciones o borrados, ya que entonces se harían muchas llamadas y podría penalizar el rendimiento.
 
+## Controlador de PDF
+
+Para actualizar el controlador del visor de PDF he utilizado una notifiación lanzada desde *AGTLibraryTableViewController* que captura el controlador *AGTSimplePDFViewController* y cambia el pdf al libro seleccionado.
