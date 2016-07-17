@@ -8,6 +8,8 @@
 
 import UIKit
 
+let libraryDidChangeNotification = "Selected book did change"
+
 class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
     private let model: AGTLibrary
     
@@ -32,10 +34,23 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
         // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
+    
+    override func viewWillAppear(animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(imageDidLoad), name: asyncImageDidLoadNotification, object: nil)
+    }
 
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Notifications
+    
+    func imageDidLoad(notification: NSNotification) {
+        self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
@@ -76,7 +91,13 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
     
     override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
         let bk = book(forIndexPath: indexPath)
+        // avisar al delegado del cambio de libro
         delegate?.libraryTableViewController(self, didSelectBook: bk)
+        
+        // notificar del cambio de libro
+        let nc = NSNotificationCenter.defaultCenter()
+        let notification = NSNotification(name: libraryDidChangeNotification, object: bk)
+        nc.postNotification(notification)
         
         let dev = UIDevice.currentDevice()
         if dev.userInterfaceIdiom == UIUserInterfaceIdiom.Phone {

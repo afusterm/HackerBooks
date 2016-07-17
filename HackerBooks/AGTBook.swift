@@ -15,10 +15,11 @@ class AGTBook: Hashable, Comparable {
     let title: String
     let authors: String
     let tags: [String]
-    let image: UIImage
     let pdfURL: NSURL
+    let imageURL: NSURL
     
     private var fav: Bool
+    private var asyncImage: AsyncImage
     
     var favorite: Bool {
         get {
@@ -36,6 +37,10 @@ class AGTBook: Hashable, Comparable {
         }
     }
     
+    var image: UIImage {
+        return asyncImage.image
+    }
+    
     var hashValue: Int {
         return title.hashValue
     }
@@ -44,13 +49,14 @@ class AGTBook: Hashable, Comparable {
         return "\(title)\(authors)"
     }
     
-    init(title: String, authors: String, tags: [String], image: UIImage, pdfURL: NSURL, favorite: Bool) {
+    init(title: String, authors: String, tags: [String], imageURL: NSURL, pdfURL: NSURL, favorite: Bool) {
         self.title = title
         self.authors = authors
         self.tags = tags
-        self.image = image
+        self.imageURL = imageURL
         self.pdfURL = pdfURL
         self.fav = favorite
+        self.asyncImage = AsyncImage(imageUrl: imageURL)
     }
 }
 

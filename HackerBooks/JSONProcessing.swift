@@ -36,14 +36,6 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         throw HackerBooksError.resourcePointedByURLNotReachable
     }
     
-    guard let imageData = NSData(contentsOfURL: imageURL) else {
-        throw HackerBooksError.downloadError
-    }
-    
-    guard let image = UIImage(data: imageData) else {
-        throw HackerBooksError.invalidImage
-    }
-    
     guard let pdfStr = json["pdf_url"] as? String else {
         throw HackerBooksError.wrongJSONFormat
     }
@@ -62,7 +54,7 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         tags.append(t.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
     }
     
-    let book = AGTBook(title: title, authors: authors, tags: tags, image: image, pdfURL: pdfURL, favorite: false)
+    let book = AGTBook(title: title, authors: authors, tags: tags, imageURL: imageURL, pdfURL: pdfURL, favorite: false)
     
     return book
 }

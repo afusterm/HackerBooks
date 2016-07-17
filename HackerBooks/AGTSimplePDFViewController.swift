@@ -26,6 +26,7 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     // MARK: - Syncing
     
     func syncModelWithView() {
+        activityIndicator.hidden = false
         activityIndicator.startAnimating()
         
         // descargar el pdf si no está en local
@@ -44,6 +45,10 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
         super.viewWillAppear(animated)
         
         webView.delegate = self
+        
+        // alta en la notificación de la tabla
+        let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(libraryDidChange), name: libraryDidChangeNotification, object: nil)
     }
     
     override func viewDidAppear(animated: Bool) {
@@ -53,6 +58,14 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
+    }
+    
+    // MARK: - Notifications
+    
+    func libraryDidChange(notification: NSNotification) {
+        let book = notification.object as! AGTBook
+        model = book
+        syncModelWithView()
     }
     
     // MARK: - UIWebViewDelegate
@@ -68,9 +81,13 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     // MARK: - Helper functions
     
     private func loadPDF() {
-        if let data = NSData(contentsOfURL: model.pdfURL),
-            baseURL = model.pdfURL.URLByDeletingLastPathComponent {
-            webView.loadData(data, MIMEType: "application/pdf", textEncodingName: "", baseURL: baseURL)
+        // descargar en segundo plano la imagen
+        let task = NSURLSession.sharedSession().dataTaskWithURL(self.model.pdfURL) { (data, response, error) -> Void in
+            if let urlContent = data, baseURL = self.model.pdfURL.URLByDeletingLastPathComponent {
+                self.webView.loadData(urlContent, MIMEType: "application/pdf", textEncodingName: "", baseURL: baseURL)
+            }
         }
+        
+        task.resume()
     }
 }
