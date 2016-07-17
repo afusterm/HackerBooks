@@ -40,6 +40,17 @@ class Tags {
         tags[tag] = books
     }
     
+    func remove(tag: String, book: AGTBook) {
+        if tags[tag] != nil {
+            tags[tag]!.remove(book)
+            
+            // si no quedan más libros en la etiqueta borrar la etiqueta
+            if tags[tag]?.count == 0 {
+                tags.removeValueForKey(tag)
+            }
+        }
+    }
+    
     /**
      *  Gets the number of books contained in a tag
      */
@@ -84,20 +95,18 @@ class Tags {
         var books = [AGTBook]()
         
         if tagIndex >= names.count {
-            return books
+            return [AGTBook]()
         }
         
         let tag = names[tagIndex]
         if let booksSet = tags[tag] {
-            for b in booksSet {
-                books.append(b)
-            }
+            // obtener los libros que contiene la etiqueta ordenados alfabéticamente
+            books = booksSet.sort({ (lhs: AGTBook, rhs: AGTBook) -> Bool in
+                lhs < rhs
+            })
         }
         
         return books
-    }
-    
-    func sort() {
     }
     
     // MARK: - Helper functions
@@ -106,5 +115,11 @@ class Tags {
         names.removeAll()
         names = Array(tags.keys)
         names = names.sort(<)
+        
+        if names.contains(favoritesTagName) {
+            let favIndex = names.indexOf(favoritesTagName)
+            names.removeAtIndex(favIndex!)
+            names.insert(favoritesTagName, atIndex: 0)
+        }
     }
 }

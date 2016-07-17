@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A9074B441D3B884700381784 /* FavoritesPersistence.swift in Sources */ = {isa = PBXBuildFile; fileRef = A9074B431D3B884700381784 /* FavoritesPersistence.swift */; };
+		A909CD931D3A8D2F0031CAFE /* AGTBookViewControllerPhone.swift in Sources */ = {isa = PBXBuildFile; fileRef = A909CD911D3A8D2F0031CAFE /* AGTBookViewControllerPhone.swift */; };
+		A909CD941D3A8D2F0031CAFE /* AGTBookViewControllerPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = A909CD921D3A8D2F0031CAFE /* AGTBookViewControllerPhone.xib */; };
 		A90B87F51D28124C00B763B6 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A90B87F41D28124C00B763B6 /* AppDelegate.swift */; };
 		A90B87FA1D28124C00B763B6 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A90B87F81D28124C00B763B6 /* Main.storyboard */; };
 		A90B87FC1D28124C00B763B6 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A90B87FB1D28124C00B763B6 /* Assets.xcassets */; };
@@ -24,6 +27,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A9074B431D3B884700381784 /* FavoritesPersistence.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FavoritesPersistence.swift; sourceTree = "<group>"; };
+		A909CD911D3A8D2F0031CAFE /* AGTBookViewControllerPhone.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AGTBookViewControllerPhone.swift; sourceTree = "<group>"; };
+		A909CD921D3A8D2F0031CAFE /* AGTBookViewControllerPhone.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = AGTBookViewControllerPhone.xib; sourceTree = "<group>"; };
 		A90B87F11D28124C00B763B6 /* HackerBooks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = HackerBooks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A90B87F41D28124C00B763B6 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A90B87F91D28124C00B763B6 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
@@ -99,6 +105,7 @@
 				A916AFFB1D2D6ABC0059D1A7 /* JSONProcessing.swift */,
 				A916AFFD1D2D6B200059D1A7 /* Errors.swift */,
 				A93A08911D32A37200305284 /* Tags.swift */,
+				A9074B431D3B884700381784 /* FavoritesPersistence.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -111,6 +118,8 @@
 				A9B652BF1D29863F003279E2 /* AGTSimplePDFViewController.swift */,
 				A9B652C01D29863F003279E2 /* AGTSimplePDFViewController.xib */,
 				A93A088F1D32997400305284 /* AGTLibraryTableViewController.swift */,
+				A909CD911D3A8D2F0031CAFE /* AGTBookViewControllerPhone.swift */,
+				A909CD921D3A8D2F0031CAFE /* AGTBookViewControllerPhone.xib */,
 			);
 			name = Controllers;
 			sourceTree = "<group>";
@@ -176,6 +185,7 @@
 			files = (
 				A927B9C31D2907E600148842 /* AGTBookViewController.xib in Resources */,
 				A9B652C21D29863F003279E2 /* AGTSimplePDFViewController.xib in Resources */,
+				A909CD941D3A8D2F0031CAFE /* AGTBookViewControllerPhone.xib in Resources */,
 				A90B87FF1D28124C00B763B6 /* LaunchScreen.storyboard in Resources */,
 				A90B87FC1D28124C00B763B6 /* Assets.xcassets in Resources */,
 				A90B87FA1D28124C00B763B6 /* Main.storyboard in Resources */,
@@ -197,6 +207,8 @@
 				A93A08921D32A37200305284 /* Tags.swift in Sources */,
 				A90B88091D2814A100B763B6 /* AGTBook.swift in Sources */,
 				A93A08901D32997400305284 /* AGTLibraryTableViewController.swift in Sources */,
+				A909CD931D3A8D2F0031CAFE /* AGTBookViewControllerPhone.swift in Sources */,
+				A9074B441D3B884700381784 /* FavoritesPersistence.swift in Sources */,
 				A916AFFE1D2D6B200059D1A7 /* Errors.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

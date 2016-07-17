@@ -8,12 +8,15 @@
 
 import UIKit
 
-class AGTLibraryTableViewController: UITableViewController {
+class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
     private let model: AGTLibrary
+    
+    var delegate: AGTLibraryTableViewDelegate?
     
     init(model: AGTLibrary) {
         self.model = model
         super.init(nibName: nil, bundle: nil)
+        self.title = "HackersBook"
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -48,9 +51,7 @@ class AGTLibraryTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let cellId = "HackerBookCellId"
         
-        // get the book
-        let books = model.booksForTagAtIndex(indexPath.section)
-        let book = books[indexPath.row]
+        let bk = book(forIndexPath: indexPath)
         
         var cell = tableView.dequeueReusableCellWithIdentifier(cellId)
         if cell == nil {
@@ -58,9 +59,9 @@ class AGTLibraryTableViewController: UITableViewController {
         }
         
         // sinchronize book and cell
-        cell?.imageView?.image = book.image
-        cell?.textLabel?.text = book.title
-        cell?.detailTextLabel?.text = book.authors
+        cell?.imageView?.image = bk.image
+        cell?.textLabel?.text = bk.title
+        cell?.detailTextLabel?.text = bk.authors
 
         // Configure the cell...
 
@@ -70,15 +71,37 @@ class AGTLibraryTableViewController: UITableViewController {
     override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         return model.tagNames[section].capitalizedString
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    
+    // MARK: - Delegate
+    
+    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+        let bk = book(forIndexPath: indexPath)
+        delegate?.libraryTableViewController(self, didSelectBook: bk)
+        
+        let dev = UIDevice.currentDevice()
+        if dev.userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
+            let bookVC = AGTBookViewControllerPhone(model: bk)
+            self.navigationController?.pushViewController(bookVC, animated: true)
+        }
     }
-    */
+    
+    func library(library: AGTLibrary, bookFavoriteAdded: AGTBook) {
+        self.tableView.reloadData()
+    }
+    
+    func library(library: AGTLibrary, bookFavoriteRemoved: AGTBook) {
+        self.tableView.reloadData()
+    }
+    
+    // MARK: - Utilities
+    
+    func book(forIndexPath indexPath: NSIndexPath) -> AGTBook {
+        // get the book
+        let books = model.booksForTagAtIndex(indexPath.section)
+        return books[indexPath.row]
+    }
+}
 
+protocol AGTLibraryTableViewDelegate {
+    func libraryTableViewController(vc: AGTLibraryTableViewController, didSelectBook: AGTBook)
 }

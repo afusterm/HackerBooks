@@ -15,6 +15,7 @@ enum HackerBooksError: ErrorType {
     case loadFileError
     case wrongJSONFormat
     case invalidImage
+    case saveFileError
 }
 
 extension HackerBooksError: CustomStringConvertible {
@@ -32,6 +33,8 @@ extension HackerBooksError: CustomStringConvertible {
             return "Wrong format in JSON file"
         case .invalidImage:
             return "Invalid image"
+        case .saveFileError:
+            return "Error while saving a file"
         }
     }
 }

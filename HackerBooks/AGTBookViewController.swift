@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AGTBookViewController: UIViewController {
+class AGTBookViewController: UIViewController, AGTLibraryTableViewDelegate {
 
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var titleLabel: UILabel!
@@ -68,18 +68,12 @@ class AGTBookViewController: UIViewController {
     
     @IBAction func switchToFavorite(sender: AnyObject) {
         self.model.favorite = switchFavorite.on
-        NSLog("Favorite %@", self.model.favorite)
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
+    // MARK: - Delegate
+    
+    func libraryTableViewController(vc: AGTLibraryTableViewController, didSelectBook: AGTBook) {
+        model = didSelectBook
+        syncModelWithView()
     }
-    */
-
 }

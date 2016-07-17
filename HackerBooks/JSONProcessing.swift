@@ -62,23 +62,7 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         tags.append(t.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
     }
     
-    var favorite = false
-    if tags.contains("favorite") {
-        favorite = true
-        
-        // remove the favorite tag
-        var i = 0;
-        for tag in tags {
-            if tag == "favorite" {
-                tags.removeAtIndex(i)
-                break
-            }
-            
-            i += 1
-        }
-    }
-    
-    let book = AGTBook(title: title, authors: authors, tags: tags, image: image, pdfURL: pdfURL, favorite: favorite)
+    let book = AGTBook(title: title, authors: authors, tags: tags, image: image, pdfURL: pdfURL, favorite: false)
     
     return book
 }

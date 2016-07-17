@@ -9,11 +9,13 @@
 import Foundation
 import UIKit
 
+let favoritesTagName = "favorites"
+
 class AGTLibrary {
-    private let favoritesTagName = "favorites"
-    
     private var books = [AGTBook]()
     private var tags = Tags()
+    
+    var delegate: AGTLibraryDelegate?
     
     // MARK: - Properties
     
@@ -30,7 +32,7 @@ class AGTLibrary {
     
     // MARK: - Initialization
     
-    init(jsonData data: NSData) throws {
+    init(jsonData data: NSData, favorites: [String]?) throws {
         let maybeArray = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
         
         var jsonBooks: JSONArray?
@@ -41,6 +43,7 @@ class AGTLibrary {
         }
         
         let nc = NSNotificationCenter.defaultCenter()
+        nc.addObserver(self, selector: #selector(bookDidChange), name: favoriteDidChangeNotification, object: nil)
         
         // create the model through the JSON file
         for dict in jsonBooks! {
@@ -52,19 +55,34 @@ class AGTLibrary {
                 tags.add(tag, book: book)
             }
             
-            // if the book is favorite then insert in favorites tag
-            if book.favorite {
-                tags.add(favoritesTagName, book: book)
+            // if the book was saved as favorite then it is added in the favorites tag
+            if let favs = favorites  {
+                if favs.contains(book.title) {
+                    tags.add(favoritesTagName, book: book)
+                    book.favorite = true
+                }
             }
-            
-            nc.addObserver(self, selector: #selector(bookDidChange), name: FavoriteDidChangeNotification, object: nil)
         }
     }
     
     // MARK: - Notification management
     
     @objc func bookDidChange(notification: NSNotification) {
+        guard let book = notification.object as? AGTBook else {
+            return
+        }
         
+        if book.favorite {
+            tags.add(favoritesTagName, book: book)
+            
+            // avisar al delegado
+            delegate?.library(self, bookFavoriteAdded: book)
+        } else if tags.tagNames.contains(favoritesTagName) {
+            // eliminar el libro de favoritos
+            tags.remove(favoritesTagName, book: book)
+            // avisar al delegado
+            delegate?.library(self, bookFavoriteRemoved: book)
+        }
     }
     
     // MARK: - Query methods
@@ -81,9 +99,12 @@ class AGTLibrary {
         return tags.booksForTagAtIndex(tagIndex)
     }
     
-    // MARK: - Data manipulation
-    
-    func sort() {
-        
+    func booksForTag(tag: String) -> [AGTBook] {
+        return tags.booksForTag(tag)
     }
+}
+
+protocol AGTLibraryDelegate {
+    func library(library: AGTLibrary, bookFavoriteAdded: AGTBook)
+    func library(library: AGTLibrary, bookFavoriteRemoved: AGTBook)
 }

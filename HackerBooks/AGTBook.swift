@@ -9,9 +9,9 @@
 import Foundation
 import UIKit
 
-let FavoriteDidChangeNotification = "Favorite tag did change"
+let favoriteDidChangeNotification = "Favorite tag did change"
 
-class AGTBook: Hashable, Equatable {
+class AGTBook: Hashable, Comparable {
     let title: String
     let authors: String
     let tags: [String]
@@ -30,7 +30,7 @@ class AGTBook: Hashable, Equatable {
                 fav = newValue
                 
                 let nc = NSNotificationCenter.defaultCenter()
-                let notif = NSNotification(name: FavoriteDidChangeNotification, object: self)
+                let notif = NSNotification(name: favoriteDidChangeNotification, object: self)
                 nc.postNotification(notif)
             }
         }
@@ -38,6 +38,10 @@ class AGTBook: Hashable, Equatable {
     
     var hashValue: Int {
         return title.hashValue
+    }
+    
+    var proxyForComparisson: String {
+        return "\(title)\(authors)"
     }
     
     init(title: String, authors: String, tags: [String], image: UIImage, pdfURL: NSURL, favorite: Bool) {
@@ -51,5 +55,13 @@ class AGTBook: Hashable, Equatable {
 }
 
 func ==(lhs: AGTBook, rhs: AGTBook) -> Bool {
-    return lhs.hashValue == rhs.hashValue
+    guard (lhs !== rhs) else {
+        return true
+    }
+    
+    return lhs.proxyForComparisson == rhs.proxyForComparisson
+}
+
+func <(lhs: AGTBook, rhs: AGTBook) -> Bool {
+    return lhs.proxyForComparisson < rhs.proxyForComparisson
 }

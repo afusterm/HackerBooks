@@ -10,12 +10,14 @@ import UIKit
 
 let urlHackerBooks = "https://t.co/K9ziV0z3SJ"
 let localBooksFilename = "books.json"
+let favoritesBooks = "favorites.plist"
 
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    var library: AGTLibrary?
 
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
@@ -38,9 +40,27 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         do {
-            let library = try AGTLibrary(jsonData: data)
+            let favorites = loadFavorites(getLocalJSONURL().URLByAppendingPathComponent(favoritesBooks))
+            library = try AGTLibrary(jsonData: data, favorites: favorites)
             
-            let VC = AGTLibraryTableViewController(model: library)
+            let libVC = AGTLibraryTableViewController(model: library!)
+            let libNC = UINavigationController(rootViewController: libVC)
+            let VC: UIViewController?
+            
+            library?.delegate = libVC
+            
+            let dev = UIDevice.currentDevice()
+            if dev.userInterfaceIdiom == UIUserInterfaceIdiom.Pad {
+                let bookVC = AGTBookViewController(model: library!.booksForTagAtIndex(0)[0])
+                let bookNC = UINavigationController(rootViewController: bookVC)
+                let splitVC = UISplitViewController()
+                splitVC.viewControllers = [libNC, bookNC]
+                
+                libVC.delegate = bookVC
+                VC = splitVC
+            } else {
+                VC = libNC
+            }
             
             // meter el controlador en la ventana
             window?.rootViewController = VC
@@ -60,11 +80,29 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func applicationWillResignActive(application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and throttle down OpenGL ES frame rates. Games should use this method to pause the game.
+        do {
+            if let favs = library?.booksForTag(favoritesTagName) {
+                try saveFavorites(getLocalJSONURL().URLByAppendingPathComponent(favoritesBooks), favorites: favs)
+            }
+        } catch let error as HackerBooksError {
+            print(error.description)
+        } catch {
+            print("Error saving favorites")
+        }
     }
 
     func applicationDidEnterBackground(application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
+        do {
+            if let favs = library?.booksForTag(favoritesTagName) {
+                try saveFavorites(getLocalJSONURL().URLByAppendingPathComponent(favoritesBooks), favorites: favs)
+            }
+        } catch let error as HackerBooksError {
+            print(error.description)
+        } catch {
+            print("Error saving favorites")
+        }
     }
 
     func applicationWillEnterForeground(application: UIApplication) {
