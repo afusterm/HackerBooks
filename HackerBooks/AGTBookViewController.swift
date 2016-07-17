@@ -70,6 +70,11 @@ class AGTBookViewController: UIViewController, AGTLibraryTableViewDelegate {
         self.model.favorite = switchFavorite.on
     }
     
+    @IBAction func openPDFViewer(sender: AnyObject) {
+        let pdfVC = AGTSimplePDFViewController(model: self.model)
+        self.navigationController?.pushViewController(pdfVC, animated: true)
+    }
+    
     // MARK: - Delegate
     
     func libraryTableViewController(vc: AGTLibraryTableViewController, didSelectBook: AGTBook) {

@@ -80,7 +80,7 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
         
         let dev = UIDevice.currentDevice()
         if dev.userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
-            let bookVC = AGTBookViewControllerPhone(model: bk)
+            let bookVC = AGTBookViewControllerPhoneViewController(model: bk)
             self.navigationController?.pushViewController(bookVC, animated: true)
         }
     }

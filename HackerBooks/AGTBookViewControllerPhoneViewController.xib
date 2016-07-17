@@ -70,6 +70,9 @@
                     <rect key="frame" x="8" y="530" width="56" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Ver PDF"/>
+                    <connections>
+                        <action selector="openPDFViewer:" destination="-1" eventType="touchUpInside" id="WKm-jg-A00"/>
+                    </connections>
                 </button>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="etiquetas" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="n3s-6r-PrR">
                     <rect key="frame" x="71" y="495" width="241" height="21"/>

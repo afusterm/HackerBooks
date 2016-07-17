@@ -24,6 +24,9 @@
                     <rect key="frame" x="22" y="722" width="67" height="30"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <state key="normal" title="Ver PDF"/>
+                    <connections>
+                        <action selector="openPDFViewer:" destination="-1" eventType="touchUpInside" id="Jeh-yI-UgI"/>
+                    </connections>
                 </button>
                 <imageView userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" id="aOk-9b-EQb">
                     <rect key="frame" x="22" y="70" width="660" height="523"/>

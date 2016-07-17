@@ -8,7 +8,7 @@
 
 import UIKit
 
-class AGTBookViewControllerPhone: UIViewController {
+class AGTBookViewControllerPhoneViewController: UIViewController {
 
     @IBOutlet weak var coverImage: UIImageView!
     @IBOutlet weak var switchFavorite: UISwitch!
@@ -69,5 +69,10 @@ class AGTBookViewControllerPhone: UIViewController {
     
     @IBAction func switchToFavorite(sender: AnyObject) {
         self.model.favorite = switchFavorite.on
+    }
+    
+    @IBAction func openPDFViewer(sender: AnyObject) {
+        let pdfVC = AGTSimplePDFViewController(model: self.model)
+        self.navigationController?.pushViewController(pdfVC, animated: true)
     }
 }
