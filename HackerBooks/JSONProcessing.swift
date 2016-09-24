@@ -32,7 +32,7 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         throw HackerBooksError.wrongJSONFormat
     }
     
-    guard let imageURL = NSURL(string: imageStr) else {
+    guard let imageURL = URL(string: imageStr) else {
         throw HackerBooksError.resourcePointedByURLNotReachable
     }
     
@@ -40,7 +40,7 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
         throw HackerBooksError.wrongJSONFormat
     }
     
-    guard let pdfURL = NSURL(string: pdfStr) else {
+    guard let pdfURL = URL(string: pdfStr) else {
         throw HackerBooksError.resourcePointedByURLNotReachable
     }
     
@@ -50,8 +50,8 @@ func decode(book json: JSONDictionary) throws -> AGTBook {
     
     // remove all the trailing spaces in tags
     var tags = [String]()
-    tagsStr.componentsSeparatedByString(",").forEach { (t: String) in
-        tags.append(t.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceCharacterSet()))
+    tagsStr.components(separatedBy: ",").forEach { (t: String) in
+        tags.append(t.trimmingCharacters(in: CharacterSet.whitespaces))
     }
     
     let book = AGTBook(title: title, authors: authors, tags: tags, imageURL: imageURL, pdfURL: pdfURL, favorite: false)

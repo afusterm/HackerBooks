@@ -15,11 +15,11 @@ class AGTBook: Hashable, Comparable {
     let title: String
     let authors: String
     let tags: [String]
-    let pdfURL: NSURL
-    let imageURL: NSURL
+    let pdfURL: URL
+    let imageURL: URL
     
-    private var fav: Bool
-    private var asyncImage: AsyncImage
+    fileprivate var fav: Bool
+    fileprivate var asyncImage: AsyncImage
     
     var favorite: Bool {
         get {
@@ -30,9 +30,9 @@ class AGTBook: Hashable, Comparable {
             if fav != newValue {
                 fav = newValue
                 
-                let nc = NSNotificationCenter.defaultCenter()
-                let notif = NSNotification(name: favoriteDidChangeNotification, object: self)
-                nc.postNotification(notif)
+                let nc = NotificationCenter.default
+                let notif = Notification(name: Notification.Name(rawValue: favoriteDidChangeNotification), object: self)
+                nc.post(notif)
             }
         }
     }
@@ -49,7 +49,7 @@ class AGTBook: Hashable, Comparable {
         return "\(title)\(authors)"
     }
     
-    init(title: String, authors: String, tags: [String], imageURL: NSURL, pdfURL: NSURL, favorite: Bool) {
+    init(title: String, authors: String, tags: [String], imageURL: URL, pdfURL: URL, favorite: Bool) {
         self.title = title
         self.authors = authors
         self.tags = tags

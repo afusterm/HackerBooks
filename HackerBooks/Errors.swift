@@ -8,7 +8,7 @@
 
 import Foundation
 
-enum HackerBooksError: ErrorType {
+enum HackerBooksError: Error {
     case resourcePointedByURLNotReachable
     case jsonParsingError
     case downloadError

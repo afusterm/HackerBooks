@@ -11,23 +11,23 @@ import Foundation
 /**
  *  Saves the favorites as JSON file.
  */
-func saveFavorites(url: NSURL, favorites: [AGTBook]) throws {
+func saveFavorites(_ url: URL, favorites: [AGTBook]) throws {
     let favs = NSMutableArray()
     
     for f in favorites {
-        favs.addObject(f.title)
+        favs.add(f.title)
     }
     
     if favs.count > 0 {
-        if !favs.writeToURL(url, atomically: true) {
+        if !favs.write(to: url, atomically: true) {
             throw HackerBooksError.saveFileError
         }
     }
 }
 
-func loadFavorites(url: NSURL) -> [String] {
+func loadFavorites(_ url: URL) -> [String] {
     var favorites = [String]()
-    if let favs = NSArray(contentsOfURL: url) {
+    if let favs = NSArray(contentsOf: url) {
         favorites = favs as! [String]
     }
     

@@ -11,8 +11,8 @@ import Foundation
 typealias TagsDictionary = [String: Set<AGTBook>]
 
 class Tags {
-    private var tags: TagsDictionary
-    private var names: [String]
+    fileprivate var tags: TagsDictionary
+    fileprivate var names: [String]
     
     /**
      *  Total amount of tags
@@ -30,7 +30,7 @@ class Tags {
         names = [String]()
     }
     
-    func add(tag: String, book: AGTBook) {
+    func add(_ tag: String, book: AGTBook) {
         var books = tags[tag]
         if books == nil {
             books = Set<AGTBook>()
@@ -40,13 +40,13 @@ class Tags {
         tags[tag] = books
     }
     
-    func remove(tag: String, book: AGTBook) {
+    func remove(_ tag: String, book: AGTBook) {
         if tags[tag] != nil {
             tags[tag]!.remove(book)
             
             // si no quedan más libros en la etiqueta borrar la etiqueta
             if tags[tag]?.count == 0 {
-                tags.removeValueForKey(tag)
+                tags.removeValue(forKey: tag)
             }
         }
     }
@@ -54,18 +54,18 @@ class Tags {
     /**
      *  Gets the number of books contained in a tag
      */
-    func bookCountForTag(tag: String?) -> Int {
-        if let t = tag, ts = tags[t] {
+    func bookCountForTag(_ tag: String?) -> Int {
+        if let t = tag, let ts = tags[t] {
             return ts.count
         }
         
         return 0
     }
     
-    func booksForTag(tag: String?) -> [AGTBook] {
+    func booksForTag(_ tag: String?) -> [AGTBook] {
         var booksArray = [AGTBook]()
         
-        if let t = tag, books = tags[t] {
+        if let t = tag, let books = tags[t] {
             for b in books {
                 booksArray.append(b)
             }
@@ -74,7 +74,7 @@ class Tags {
         return booksArray
     }
     
-    func booksCountForTagAtIndex(tagIndex: Int) -> Int {
+    func booksCountForTagAtIndex(_ tagIndex: Int) -> Int {
         if names.count != tags.keys.count {
             populateTagNames()
         }
@@ -87,7 +87,7 @@ class Tags {
         return 0
     }
     
-    func booksForTagAtIndex(tagIndex: Int) -> [AGTBook] {
+    func booksForTagAtIndex(_ tagIndex: Int) -> [AGTBook] {
         if names.count != tags.keys.count {
             populateTagNames()
         }
@@ -101,7 +101,7 @@ class Tags {
         let tag = names[tagIndex]
         if let booksSet = tags[tag] {
             // obtener los libros que contiene la etiqueta ordenados alfabéticamente
-            books = booksSet.sort({ (lhs: AGTBook, rhs: AGTBook) -> Bool in
+            books = booksSet.sorted(by: { (lhs: AGTBook, rhs: AGTBook) -> Bool in
                 lhs < rhs
             })
         }
@@ -111,15 +111,15 @@ class Tags {
     
     // MARK: - Helper functions
     
-    private func populateTagNames() {
+    fileprivate func populateTagNames() {
         names.removeAll()
         names = Array(tags.keys)
-        names = names.sort(<)
+        names = names.sorted(by: <)
         
         if names.contains(favoritesTagName) {
-            let favIndex = names.indexOf(favoritesTagName)
-            names.removeAtIndex(favIndex!)
-            names.insert(favoritesTagName, atIndex: 0)
+            let favIndex = names.index(of: favoritesTagName)
+            names.remove(at: favIndex!)
+            names.insert(favoritesTagName, at: 0)
         }
     }
 }

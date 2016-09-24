@@ -12,26 +12,26 @@ import UIKit
 let asyncImageDidLoadNotification = "Image was downloaded"
 
 class AsyncImage {
-    private let imagePlaceHolder = "placeholder.jpg"
+    fileprivate let imagePlaceHolder = "placeholder.jpg"
     
-    private var img: UIImage
+    fileprivate var img: UIImage
     
-    init(imageUrl url: NSURL) {
+    init(imageUrl url: URL) {
         // inicializar la imagen con la imagen placeholder
         img = UIImage(named: imagePlaceHolder)!
         
-        let nc = NSNotificationCenter.defaultCenter()
-        let notif = NSNotification(name: asyncImageDidLoadNotification, object: self)
+        let nc = NotificationCenter.default
+        let notif = Notification(name: Notification.Name(rawValue: asyncImageDidLoadNotification), object: self)
         
         // descargar en segundo plano la imagen
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) { (data, response, error) -> Void in
-            if let urlContent = data, imgBg = UIImage(data: urlContent) {
+        let task = URLSession.shared.dataTask(with: url, completionHandler: { (data, response, error) -> Void in
+            if let urlContent = data, let imgBg = UIImage(data: urlContent) {
                 self.img = imgBg
                 
                 // notificar que se ha descargado la imagen
-                nc.postNotification(notif)
+                nc.post(notif)
             }
-        }
+        }) 
         
         task.resume()
     }

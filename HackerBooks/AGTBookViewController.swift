@@ -37,18 +37,18 @@ class AGTBookViewController: UIViewController, AGTLibraryTableViewDelegate {
         // actualizar etiquetas
         var tags = ""
         for tag in self.model.tags {
-            tags.appendContentsOf(tag)
-            tags.appendContentsOf(" ")
+            tags.append(tag)
+            tags.append(" ")
         }
         
         tagsLabel.text = tags
         
-        switchFavorite.on = self.model.favorite
+        switchFavorite.isOn = self.model.favorite
     }
     
     // MARK: - View life cycle
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         syncModelWithView()
     }
@@ -66,18 +66,18 @@ class AGTBookViewController: UIViewController, AGTLibraryTableViewDelegate {
     
     // MARK: - Actions
     
-    @IBAction func switchToFavorite(sender: AnyObject) {
-        self.model.favorite = switchFavorite.on
+    @IBAction func switchToFavorite(_ sender: AnyObject) {
+        self.model.favorite = switchFavorite.isOn
     }
     
-    @IBAction func openPDFViewer(sender: AnyObject) {
+    @IBAction func openPDFViewer(_ sender: AnyObject) {
         let pdfVC = AGTSimplePDFViewController(model: self.model)
         self.navigationController?.pushViewController(pdfVC, animated: true)
     }
     
     // MARK: - Delegate
     
-    func libraryTableViewController(vc: AGTLibraryTableViewController, didSelectBook: AGTBook) {
+    func libraryTableViewController(_ vc: AGTLibraryTableViewController, didSelectBook: AGTBook) {
         model = didSelectBook
         syncModelWithView()
     }

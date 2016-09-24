@@ -11,7 +11,7 @@ import UIKit
 let libraryDidChangeNotification = "Selected book did change"
 
 class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
-    private let model: AGTLibrary
+    fileprivate let model: AGTLibrary
     
     var delegate: AGTLibraryTableViewDelegate?
     
@@ -35,11 +35,11 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
         // self.navigationItem.rightBarButtonItem = self.editButtonItem()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(imageDidLoad), name: asyncImageDidLoadNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(imageDidLoad), name: NSNotification.Name(rawValue: asyncImageDidLoadNotification), object: nil)
     }
 
     override func didReceiveMemoryWarning() {
@@ -49,28 +49,28 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
     
     // MARK: - Notifications
     
-    func imageDidLoad(notification: NSNotification) {
+    func imageDidLoad(_ notification: Notification) {
         self.tableView.reloadData()
     }
 
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return model.tagNames.count
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return model.booksCountForTagAtIndex(section)
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cellId = "HackerBookCellId"
         
         let bk = book(forIndexPath: indexPath)
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(cellId)
+        var cell = tableView.dequeueReusableCell(withIdentifier: cellId)
         if cell == nil {
-            cell = UITableViewCell(style: .Subtitle, reuseIdentifier: cellId)
+            cell = UITableViewCell(style: .subtitle, reuseIdentifier: cellId)
         }
         
         // sinchronize book and cell
@@ -83,46 +83,46 @@ class AGTLibraryTableViewController: UITableViewController, AGTLibraryDelegate {
         return cell!
     }
     
-    override func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        return model.tagNames[section].capitalizedString
+    override func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        return model.tagNames[section].capitalized
     }
     
     // MARK: - Delegate
     
-    override func tableView(tableView: UITableView, didSelectRowAtIndexPath indexPath: NSIndexPath) {
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let bk = book(forIndexPath: indexPath)
         // avisar al delegado del cambio de libro
         delegate?.libraryTableViewController(self, didSelectBook: bk)
         
         // notificar del cambio de libro
-        let nc = NSNotificationCenter.defaultCenter()
-        let notification = NSNotification(name: libraryDidChangeNotification, object: bk)
-        nc.postNotification(notification)
+        let nc = NotificationCenter.default
+        let notification = Notification(name: Notification.Name(rawValue: libraryDidChangeNotification), object: bk)
+        nc.post(notification)
         
-        let dev = UIDevice.currentDevice()
-        if dev.userInterfaceIdiom == UIUserInterfaceIdiom.Phone {
+        let dev = UIDevice.current
+        if dev.userInterfaceIdiom == UIUserInterfaceIdiom.phone {
             let bookVC = AGTBookViewControllerPhoneViewController(model: bk)
             self.navigationController?.pushViewController(bookVC, animated: true)
         }
     }
     
-    func library(library: AGTLibrary, bookFavoriteAdded: AGTBook) {
+    func library(_ library: AGTLibrary, bookFavoriteAdded: AGTBook) {
         self.tableView.reloadData()
     }
     
-    func library(library: AGTLibrary, bookFavoriteRemoved: AGTBook) {
+    func library(_ library: AGTLibrary, bookFavoriteRemoved: AGTBook) {
         self.tableView.reloadData()
     }
     
     // MARK: - Utilities
     
-    func book(forIndexPath indexPath: NSIndexPath) -> AGTBook {
+    func book(forIndexPath indexPath: IndexPath) -> AGTBook {
         // get the book
-        let books = model.booksForTagAtIndex(indexPath.section)
-        return books[indexPath.row]
+        let books = model.booksForTagAtIndex((indexPath as NSIndexPath).section)
+        return books[(indexPath as NSIndexPath).row]
     }
 }
 
 protocol AGTLibraryTableViewDelegate {
-    func libraryTableViewController(vc: AGTLibraryTableViewController, didSelectBook: AGTBook)
+    func libraryTableViewController(_ vc: AGTLibraryTableViewController, didSelectBook: AGTBook)
 }

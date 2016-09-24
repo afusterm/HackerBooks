@@ -12,8 +12,8 @@ import UIKit
 let favoritesTagName = "favorites"
 
 class AGTLibrary {
-    private var books = [AGTBook]()
-    private var tags = Tags()
+    fileprivate var books = [AGTBook]()
+    fileprivate var tags = Tags()
     
     var delegate: AGTLibraryDelegate?
     
@@ -32,8 +32,8 @@ class AGTLibrary {
     
     // MARK: - Initialization
     
-    init(jsonData data: NSData, favorites: [String]?) throws {
-        let maybeArray = try? NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers)
+    init(jsonData data: Data, favorites: [String]?) throws {
+        let maybeArray = try? JSONSerialization.jsonObject(with: data, options: JSONSerialization.ReadingOptions.mutableContainers)
         
         var jsonBooks: JSONArray?
         if maybeArray is JSONArray {
@@ -42,8 +42,8 @@ class AGTLibrary {
             jsonBooks = [dict]
         }
         
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(bookDidChange), name: favoriteDidChangeNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(bookDidChange), name: NSNotification.Name(rawValue: favoriteDidChangeNotification), object: nil)
         
         // create the model through the JSON file
         for dict in jsonBooks! {
@@ -67,7 +67,7 @@ class AGTLibrary {
     
     // MARK: - Notification management
     
-    @objc func bookDidChange(notification: NSNotification) {
+    @objc func bookDidChange(_ notification: Notification) {
         guard let book = notification.object as? AGTBook else {
             return
         }
@@ -87,24 +87,24 @@ class AGTLibrary {
     
     // MARK: - Query methods
     
-    func bookCountForTag(tag: String?) -> Int {
+    func bookCountForTag(_ tag: String?) -> Int {
         return tags.bookCountForTag(tag)
     }
     
-    func booksCountForTagAtIndex(tagIndex: Int) -> Int {
+    func booksCountForTagAtIndex(_ tagIndex: Int) -> Int {
         return tags.booksCountForTagAtIndex(tagIndex)
     }
     
-    func booksForTagAtIndex(tagIndex: Int) -> [AGTBook] {
+    func booksForTagAtIndex(_ tagIndex: Int) -> [AGTBook] {
         return tags.booksForTagAtIndex(tagIndex)
     }
     
-    func booksForTag(tag: String) -> [AGTBook] {
+    func booksForTag(_ tag: String) -> [AGTBook] {
         return tags.booksForTag(tag)
     }
 }
 
 protocol AGTLibraryDelegate {
-    func library(library: AGTLibrary, bookFavoriteAdded: AGTBook)
-    func library(library: AGTLibrary, bookFavoriteRemoved: AGTBook)
+    func library(_ library: AGTLibrary, bookFavoriteAdded: AGTBook)
+    func library(_ library: AGTLibrary, bookFavoriteRemoved: AGTBook)
 }

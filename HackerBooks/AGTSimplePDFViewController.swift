@@ -26,7 +26,7 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     // MARK: - Syncing
     
     func syncModelWithView() {
-        activityIndicator.hidden = false
+        activityIndicator.isHidden = false
         activityIndicator.startAnimating()
         
         // descargar el pdf si no está en local
@@ -41,17 +41,17 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
         // Do any additional setup after loading the view.
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
         webView.delegate = self
         
         // alta en la notificación de la tabla
-        let nc = NSNotificationCenter.defaultCenter()
-        nc.addObserver(self, selector: #selector(libraryDidChange), name: libraryDidChangeNotification, object: nil)
+        let nc = NotificationCenter.default
+        nc.addObserver(self, selector: #selector(libraryDidChange), name: NSNotification.Name(rawValue: libraryDidChangeNotification), object: nil)
     }
     
-    override func viewDidAppear(animated: Bool) {
+    override func viewDidAppear(_ animated: Bool) {
         syncModelWithView()
     }
 
@@ -62,7 +62,7 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     
     // MARK: - Notifications
     
-    func libraryDidChange(notification: NSNotification) {
+    func libraryDidChange(_ notification: Notification) {
         let book = notification.object as! AGTBook
         model = book
         syncModelWithView()
@@ -70,23 +70,24 @@ class AGTSimplePDFViewController: UIViewController, UIWebViewDelegate {
     
     // MARK: - UIWebViewDelegate
     
-    func webViewDidFinishLoad(webView: UIWebView) {
+    func webViewDidFinishLoad(_ webView: UIWebView) {
         // parar el activity view
         activityIndicator.stopAnimating()
         
         // ocultarlo
-        activityIndicator.hidden = true
+        activityIndicator.isHidden = true
     }
     
     // MARK: - Helper functions
     
-    private func loadPDF() {
+    fileprivate func loadPDF() {
         // descargar en segundo plano la imagen
-        let task = NSURLSession.sharedSession().dataTaskWithURL(self.model.pdfURL) { (data, response, error) -> Void in
-            if let urlContent = data, baseURL = self.model.pdfURL.URLByDeletingLastPathComponent {
-                self.webView.loadData(urlContent, MIMEType: "application/pdf", textEncodingName: "", baseURL: baseURL)
+        let task = URLSession.shared.dataTask(with: self.model.pdfURL, completionHandler: { (data, response, error) -> Void in
+            if let urlContent = data {
+                let baseURL = self.model.pdfURL.deletingLastPathComponent()
+                self.webView.load(urlContent, mimeType: "application/pdf", textEncodingName: "", baseURL: baseURL)
             }
-        }
+        }) 
         
         task.resume()
     }

@@ -16,7 +16,7 @@ class AGTBookViewControllerPhoneViewController: UIViewController {
     @IBOutlet weak var authorsLabel: UILabel!
     @IBOutlet weak var tagsLabel: UILabel!
     
-    private var model: AGTBook
+    fileprivate var model: AGTBook
     
     init(model: AGTBook) {
         self.model = model
@@ -29,7 +29,7 @@ class AGTBookViewControllerPhoneViewController: UIViewController {
     
     // MARK: - View life cycle
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         syncModelWithView()
     }
@@ -56,22 +56,22 @@ class AGTBookViewControllerPhoneViewController: UIViewController {
         // actualizar etiquetas
         var tags = ""
         for tag in self.model.tags {
-            tags.appendContentsOf(tag)
-            tags.appendContentsOf(" ")
+            tags.append(tag)
+            tags.append(" ")
         }
         
         tagsLabel.text = tags
         
-        switchFavorite.on = self.model.favorite
+        switchFavorite.isOn = self.model.favorite
     }
     
     // MARK: - Actions
     
-    @IBAction func switchToFavorite(sender: AnyObject) {
-        self.model.favorite = switchFavorite.on
+    @IBAction func switchToFavorite(_ sender: AnyObject) {
+        self.model.favorite = switchFavorite.isOn
     }
     
-    @IBAction func openPDFViewer(sender: AnyObject) {
+    @IBAction func openPDFViewer(_ sender: AnyObject) {
         let pdfVC = AGTSimplePDFViewController(model: self.model)
         self.navigationController?.pushViewController(pdfVC, animated: true)
     }
